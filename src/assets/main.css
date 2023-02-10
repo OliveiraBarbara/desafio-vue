@@ -40,6 +40,10 @@ a,
     Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
+body{
+  margin: 0px 0px;
+}
+
 #app{
   min-width: 300px;
   margin: auto auto;
@@ -57,11 +61,12 @@ header{
   display: flex;
   justify-content:space-around;
   align-items: center;
+  background-color: #41167f;
+  color: whitesmoke;
 }
 
 main{
   grid-area: principal;
-  display: block;
   text-align: center;
 }
 
@@ -72,6 +77,8 @@ footer{
   text-align: center;
   width: 100%;
   padding: 10px;
+  background-color: #41167f;
+  color: whitesmoke;
 }
 
 footer p{
