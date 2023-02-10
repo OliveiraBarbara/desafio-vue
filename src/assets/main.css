@@ -59,6 +59,12 @@ header{
   align-items: center;
 }
 
+main{
+  grid-area: principal;
+  display: block;
+  text-align: center;
+}
+
 footer{
   grid-area: rodape;
   font-size: 1em;
