@@ -18,6 +18,7 @@
               const types = data.types.map(typeInfo => typeInfo.type.name);
               const hab = data.abilities.map(abilitiesInfo => abilitiesInfo.ability.name);
               const carac = data.stats.map(statsInfo => statsInfo.stat.name);
+              const caracN = data.stats.map(nInfo => nInfo.base_stat);
               document.getElementById('poke').innerHTML = data['name'];
               document.getElementById('tipo').innerHTML = `Tipos: ${types.join(', ')}`;
               document.getElementById('hab').innerHTML = `Habilidades: ${hab.join(', ')}`;
@@ -45,7 +46,7 @@
     <div class="list">
       <div>
         <h2>Atributos do Pokemon </h2>
-            <ul class="card-todo">
+            <ul>
               <li class="card">
                 <h3 id="poke"></h3>
                 <p id="tipo" class="sub"></p>
@@ -86,7 +87,7 @@
   border-color: black;
 }
 
-.card-todo{
+.card{
   list-style: none;
 	padding: 40px;
 	color: #222;
