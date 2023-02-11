@@ -14,6 +14,8 @@
       const poke = await fetch(url);
       const pokemon = await poke.json();
       this.pokeData = pokemon;
+      let img = pokemon.sprites.front_default;
+      document.getElementById('pic').setAttribute('src', img);
       return pokemon
         // .then((response) => {
         //   return response.json();
@@ -63,7 +65,7 @@
                   <span v-for="(carac, key) in pokeData.stats" :key="key">{{ carac.stat.name}} = {{carac.base_stat }}. </span>
                 </p>
                 <p id="peso" class="sub">Peso: {{ pokeData.weight }}</p>
-                <img id="pic" :src="pokeData.sprites.front_default" :alt="pokeData.name">
+                <img id="pic" :alt="pokeData.name">
               </li>
             </ul> 
       </div>
