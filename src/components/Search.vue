@@ -2,35 +2,39 @@
   export default {
     data() {
       return {
+        pokeData: {},
         name: ''
       }
     },
     methods: {
-      loadPoke() {
-        const inputNome = document.getElementById('nome');
-        const nome = inputNome.value;
-        const url = `https://pokeapi.co/api/v2/pokemon/${nome}`;
-        fetch(url)
-            .then((response) => {
-              return response.json();
-            })
-            .then((data) => {
-              const types = data.types.map(typeInfo => typeInfo.type.name);
-              const hab = data.abilities.map(abilitiesInfo => abilitiesInfo.ability.name);
-              const carac = data.stats.map(statsInfo => statsInfo.stat.name);
-              const caracN = data.stats.map(nInfo => nInfo.base_stat);
-              document.getElementById('poke').innerHTML = data['name'];
-              document.getElementById('tipo').innerHTML = `Tipos: ${types.join(', ')}`;
-              document.getElementById('hab').innerHTML = `Habilidades: ${hab.join(', ')}`;
-              document.getElementById('stats').innerHTML = `Características: ${carac.join(', ')}`;
-              document.getElementById('peso').innerHTML = 'Peso: ' + data['weight'];
-              let img = data['sprites']['front_default'];
-              document.getElementById('pic').setAttribute('src', img, 'alt', data['name']);
-              })
-            .catch((erro) => {
-              console.error(erro);
-            });
-        this.name = '';
+      async loadPoke() {
+      const inputNome = document.getElementById('nome');
+      const nome = inputNome.value;
+      const url = `https://pokeapi.co/api/v2/pokemon/${nome}`;
+      const poke = await fetch(url);
+      const pokemon = await poke.json();
+      this.pokeData = pokemon;
+      return pokemon
+        // .then((response) => {
+        //   return response.json();
+        // })
+        // .then((data) => {
+        //   console.log(data.name);
+        //   const types = data.types.map(typeInfo => typeInfo.type.name);
+        //   const hab = data.abilities.map(abilitiesInfo => abilitiesInfo.ability.name);
+        //   const carac = data.stats.map(statsInfo => statsInfo.stat.name);
+        //   const caracN = data.stats.map(nInfo => nInfo.base_stat);
+        //   document.getElementById('poke').innerHTML = data['name'];
+        //   document.getElementById('tipo').innerHTML = `Tipos: ${types.join(', ')}`;
+        //   document.getElementById('hab').innerHTML = `Habilidades: ${hab.join(', ')}`;
+        //   document.getElementById('stats').innerHTML = `Características: ${carac.join(', ')}`;
+        //   document.getElementById('peso').innerHTML = 'Peso: ' + data['weight'];
+        //   let img = data.sprites.front_default;
+        //   document.getElementById('pic').setAttribute('src', img);
+        //   })
+        // .catch((erro) => {
+        //   console.error(erro);
+        // });
       }
     }
   }
@@ -43,17 +47,23 @@
       <button v-on:click="loadPoke" type="submit" class="btn btn-primary">Pesquisar</button>
     </div>
 
-    <div class="list">
+    <div class="list" v-if="name.length > 0">
       <div>
         <h2>Atributos do Pokemon </h2>
             <ul>
               <li class="card">
-                <h3 id="poke"></h3>
-                <p id="tipo" class="sub"></p>
-                <p id="hab" class="sub"></p>
-                <p id="stats" class="sub"></p>
-                <p id="peso" class="sub"></p>
-                <img id="pic">
+                <h3 id="poke">{{ pokeData.name }}</h3>
+                <p id="tipo" class="sub">Tipo: 
+                  <span v-for="(type, key) in pokeData.types" :key="key">{{ type.type.name }}. </span>
+                </p>
+                <p id="hab" class="sub">Habilidades:
+                  <span v-for="(hab, key) in pokeData.abilities" :key="key">{{ hab.ability.name}}. </span>
+                </p>
+                <p id="stats" class="sub">Características:
+                  <span v-for="(carac, key) in pokeData.stats" :key="key">{{ carac.stat.name}} = {{carac.base_stat }}. </span>
+                </p>
+                <p id="peso" class="sub">Peso: {{ pokeData.weight }}</p>
+                <img id="pic" :src="pokeData.sprites.front_default" :alt="pokeData.name">
               </li>
             </ul> 
       </div>
@@ -88,26 +98,6 @@
 }
 
 .card{
-  list-style: none;
-	padding: 40px;
-	color: #222;
-	text-align: center;
-	border-radius: 20px;
-	position: relative;
-} 
-
-/* table{
-  margin: 25px;
-  border: 0.5px solid #41167f;
-  border-radius: 20px;
-  box-shadow: 2px 2px 10px #41167f;
-  display: inline-table;
-  align-items: center;
-  text-align: center;
-} */
-
-.card::after {
-  
 	margin: 25px;
   border: 0.5px solid #41167f;
   border-radius: 20px;
@@ -128,7 +118,7 @@
 .sub {
 	margin: 10px;
 	color: #2b2929;
-	font-weight: lighter;
+	font-weight: normal;
 }
 
 #pic{
